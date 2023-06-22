@@ -1,16 +1,15 @@
 package com.fesvieira.whateverweather.models
 
 import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
-data class WeatherResponse(
-    val data: WeatherData,
-    val status: String? = null
-)
+@JsonClass(generateAdapter = true)
 data class WeatherData(
     @Json(name = "location")
     val location: Location
 )
 
+@JsonClass(generateAdapter = true)
 data class Location(
     @Json(name = "name")
     val name: String,

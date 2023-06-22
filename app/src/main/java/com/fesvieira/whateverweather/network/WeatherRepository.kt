@@ -1,6 +1,7 @@
 package com.fesvieira.whateverweather.network
 
 import com.fesvieira.whateverweather.models.WeatherData
+import com.fesvieira.whateverweather.models.WeatherResponse
 import retrofit2.Response
 import retrofit2.http.Query
 import javax.inject.Inject

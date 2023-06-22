@@ -2,6 +2,7 @@ package com.fesvieira.whateverweather.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.fesvieira.whateverweather.network.WeatherRepository
 import com.fesvieira.whateverweather.network.WeatherService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -12,11 +13,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class WeatherViewModel @Inject constructor(
-    private val weatherService: WeatherService
+    private val weatherRepository: WeatherRepository
 ): ViewModel() {
     fun getWeather(query: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            weatherService.getWeather("maringa")
+            val a = weatherRepository.getWeather("maringa")
+            println(a)
         }
     }
 }

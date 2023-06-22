@@ -8,7 +8,9 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -45,6 +47,13 @@ object AppModule {
             .connectTimeout(30, TimeUnit.SECONDS)
             .writeTimeout(30, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
+
+        builder.addInterceptor(Interceptor {
+            val request = it.request().newBuilder()
+                .addHeader("X-RapidAPI-Key", BuildConfig.WEATHER_KEY)
+                .build()
+            return@Interceptor it.proceed(request)
+        })
 
 
         if (BuildConfig.DEBUG) {
