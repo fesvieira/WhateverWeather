@@ -2,6 +2,10 @@ package com.fesvieira.whateverweather.models
 
 import com.squareup.moshi.Json
 
+data class WeatherResponse(
+    val data: WeatherData,
+    val status: String? = null
+)
 data class WeatherData(
     @Json(name = "location")
     val location: Location
