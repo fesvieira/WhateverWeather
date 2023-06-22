@@ -1,30 +1,55 @@
 package com.fesvieira.whateverweather.models
 
 import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
 
-@JsonClass(generateAdapter = true)
 data class WeatherData(
-    @Json(name = "location")
-    val location: Location
+    val location: Location,
+    @Json(name = "current")
+    val weather: CurrentWeather
 )
 
-@JsonClass(generateAdapter = true)
 data class Location(
-    @Json(name = "name")
     val name: String,
-    @Json(name = "region")
     val region: String,
-    @Json(name = "country")
     val country: String,
-    @Json(name = "lat")
     val lat: Float,
-    @Json(name = "lon")
     val lon: Float,
-    @Json(name = "tz_id")
     val tz_id: String,
-    @Json(name = "localtime_epoch")
     val localtime_epoch: Long,
-    @Json(name = "localtime")
     val localtime: String
 )
+
+data class CurrentWeather(
+    val last_updated_epoch: Long,
+    val last_updated: String,
+    val temp_c: Int,
+    val temp_f: Double,
+    val is_day: Int,
+    val condition: Condition,
+    val wind_mph: Double,
+    val wind_kph: Double,
+    val wind_degree: Int,
+    val wind_dir: String,
+    val pressure_mb: Int,
+    val pressure_in: Double,
+    val precip_mm: Double,
+    val precip_in: Double,
+    val humidity: Int,
+    val cloud: Int,
+    val feelslike_c: Double,
+    val feelslike_f: Double,
+    val vis_km: Int,
+    val vis_miles: Int,
+    val uv: Int,
+    val gust_mph: Double,
+    val gust_kph: Double,
+)
+
+data class Condition(
+    val text: String,
+    val icon: String,
+    val code: Int,
+)
+
+
+

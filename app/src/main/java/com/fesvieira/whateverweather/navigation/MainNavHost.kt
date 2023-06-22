@@ -11,6 +11,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.fesvieira.whateverweather.navigation.Routes.START_SCREEN
+import com.fesvieira.whateverweather.screens.StartScreen
 import com.fesvieira.whateverweather.viewmodels.WeatherViewModel
 
 @Composable
@@ -18,17 +20,9 @@ fun MainNavHost() {
     val navController = rememberNavController()
     val weatherViewModel = hiltViewModel<WeatherViewModel>()
 
-    NavHost(navController = navController, startDestination = "a") {
-        composable("a") {
-            LaunchedEffect(key1 = Unit) {
-                weatherViewModel.getWeather("maringa")
-            }
-            Surface(
-                modifier = Modifier.fillMaxSize(),
-                color = MaterialTheme.colorScheme.background
-            ) {
-                Text(text = "Ola")
-            }
+    NavHost(navController = navController, startDestination = START_SCREEN) {
+        composable(START_SCREEN) {
+            StartScreen(navController, weatherViewModel)
         }
     }
 }
