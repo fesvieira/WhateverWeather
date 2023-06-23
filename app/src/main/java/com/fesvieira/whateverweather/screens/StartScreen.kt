@@ -102,14 +102,8 @@ fun StartScreen(
     val focusManager = LocalFocusManager.current
 
     LaunchedEffect(weatherData) {
-        systemUiController.setStatusBarColor(
-            weatherGradient[0],
-            darkIcons = lottieRes == R.raw.clear_night
-        )
-        systemUiController.setNavigationBarColor(
-            weatherGradient[1],
-            darkIcons = lottieRes == R.raw.clear_night
-        )
+        systemUiController.setStatusBarColor(weatherGradient[0])
+        systemUiController.setNavigationBarColor(weatherGradient[1])
         isPlayingAnimation = true
     }
 
