@@ -27,7 +27,6 @@ val Typography = Typography(
         color = Color.White,
         fontWeight = FontWeight.Normal
     ),
-
     bodyMedium = TextStyle(
         fontSize = 20.sp,
         fontFamily = Montserrat,
