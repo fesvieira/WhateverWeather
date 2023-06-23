@@ -1,6 +1,8 @@
 package com.fesvieira.whateverweather.components
 
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActionScope
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -11,6 +13,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.DarkGray
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
@@ -27,6 +30,7 @@ fun FormsTextField(
     focusRequester: FocusRequester? = null,
     backgroundColor: Color = MidnightBlue,
     errorMessage: String? = null,
+    onDone: (KeyboardActionScope) -> Unit,
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
 ) {
@@ -59,7 +63,8 @@ fun FormsTextField(
         textStyle = Typography.bodyMedium,
         singleLine = true,
         shape = RoundedCornerShape(24.dp),
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text, capitalization = KeyboardCapitalization.Sentences),
+        keyboardActions = KeyboardActions(onDone = onDone),
         leadingIcon = leadingIcon,
         trailingIcon = trailingIcon,
         isError = errorMessage != null,

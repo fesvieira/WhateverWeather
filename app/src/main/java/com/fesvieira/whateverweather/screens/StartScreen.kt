@@ -1,18 +1,12 @@
 package com.fesvieira.whateverweather.screens
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.animateColor
-import androidx.compose.animation.core.Transition
-import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.updateTransition
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -34,9 +28,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
@@ -56,17 +53,10 @@ import com.fesvieira.whateverweather.helpers.formatTemperature
 import com.fesvieira.whateverweather.helpers.gradientBackground
 import com.fesvieira.whateverweather.helpers.weatherGradient
 import com.fesvieira.whateverweather.helpers.weatherLottie
+import com.fesvieira.whateverweather.helpers.withShadow
 import com.fesvieira.whateverweather.models.Result
-import com.fesvieira.whateverweather.models.WeatherData
-import com.fesvieira.whateverweather.ui.theme.CloudGradientBottom
-import com.fesvieira.whateverweather.ui.theme.CloudGradientTop
-import com.fesvieira.whateverweather.ui.theme.DarkBlue
 import com.fesvieira.whateverweather.ui.theme.Gray
 import com.fesvieira.whateverweather.ui.theme.MidnightBlue
-import com.fesvieira.whateverweather.ui.theme.NightGradientBottom
-import com.fesvieira.whateverweather.ui.theme.NightGradientTop
-import com.fesvieira.whateverweather.ui.theme.SunnyGradientBottom
-import com.fesvieira.whateverweather.ui.theme.SunnyGradientTop
 import com.fesvieira.whateverweather.ui.theme.Typography
 import com.fesvieira.whateverweather.viewmodels.WeatherViewModel
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -104,6 +94,12 @@ fun StartScreen(
             isPlaying = isPlayingAnimation,
             speed = if (lottieRes == R.raw.sunny) 0.5f else 2.0f
         )
+
+    val focusRequester = remember {
+        FocusRequester()
+    }
+
+    val focusManager = LocalFocusManager.current
 
     LaunchedEffect(weatherData) {
         systemUiController.setStatusBarColor(
@@ -145,37 +141,19 @@ fun StartScreen(
 
                 Text(
                     text = weatherData?.location?.formatLocale ?: "",
-                    style = Typography.bodyMedium.copy(
-                        shadow = Shadow(
-                            color = Color.Black.copy(alpha = 0.25f),
-                            offset = Offset(x = 2f, y = 4f),
-                            blurRadius = 0.1f
-                        )
-                    ),
+                    style = Typography.bodyMedium.withShadow,
                     textAlign = TextAlign.Center,
                 )
 
                 Text(
                     text = weatherData?.weather?.temp_c?.formatTemperature ?: "",
-                    style = Typography.headlineLarge.copy(
-                        shadow = Shadow(
-                            color = Color.Black.copy(alpha = 0.25f),
-                            offset = Offset(x = 2f, y = 4f),
-                            blurRadius = 0.1f
-                        )
-                    ),
+                    style = Typography.headlineLarge.withShadow,
                 )
 
                 Text(
                     text = weatherData?.weather?.condition?.text ?: "",
-                    style = Typography.bodyMedium.copy(
-                        shadow = Shadow(
-                            color = Color.Black.copy(alpha = 0.5f),
-                            offset = Offset(x = 2f, y = 4f),
-                            blurRadius = 0.1f
-                        )
-                    ),
-                    color = Gray,
+                    style = Typography.bodyMedium.withShadow,
+                    color = Color.White,
                     fontWeight = FontWeight.ExtraBold
                 )
             }
@@ -198,6 +176,7 @@ fun StartScreen(
         FormsTextField(
             textState = textState,
             backgroundColor = MidnightBlue.copy(alpha = 0.6f),
+            focusRequester = focusRequester,
             onValueChange = {
                 textState = it
             },
@@ -209,15 +188,23 @@ fun StartScreen(
                     modifier = Modifier
                         .clip(CircleShape)
                         .clickable {
+                            focusManager.clearFocus()
                             weatherViewModel.getWeather(textState.text)
                         }
                         .padding(12.dp)
                 )
             },
             placeholder = "Discover weather...",
+            onDone = {
+                 focusManager.clearFocus()
+                 weatherViewModel.getWeather(textState.text)
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .align(Alignment.BottomCenter)
+                .onFocusChanged {
+                    if (it.hasFocus) textState = TextFieldValue("")
+                }
         )
     }
 }
