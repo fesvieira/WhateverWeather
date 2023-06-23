@@ -12,12 +12,14 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -36,6 +38,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
+import com.airbnb.lottie.compose.animateLottieCompositionAsState
+import com.airbnb.lottie.compose.rememberLottieComposition
 import com.fesvieira.whateverweather.R
 import com.fesvieira.whateverweather.components.FormsTextField
 import com.fesvieira.whateverweather.helpers.formatLocale
@@ -68,6 +75,36 @@ fun StartScreen(
         mutableStateOf(TextFieldValue(""))
     }
 
+    val lottieRes by remember(weatherData) { derivedStateOf {
+        val code = weatherData?.weather?.condition?.code ?: return@derivedStateOf null
+        when (code) {
+            1000 -> if (weatherData?.weather?.is_day == 0) R.raw.clear_night else R.raw.sunny
+            in 1001..1087 -> R.raw.clouds
+            in 1088..1282 -> R.raw.clouds
+            else -> null
+        }
+    }}
+
+    var isPlayingAnimation by remember {
+        mutableStateOf(true)
+    }
+
+    val composition by rememberLottieComposition(
+        spec = LottieCompositionSpec.RawRes(lottieRes ?: R.raw.sunny)
+    )
+    val logoAnimationState =
+        animateLottieCompositionAsState(
+            composition = composition,
+            iterations = LottieConstants.IterateForever,
+            isPlaying = isPlayingAnimation,
+            speed = if (lottieRes == R.raw.sunny) 0.5f else 2.0f
+        )
+
+    LaunchedEffect(lottieRes) {
+        if (lottieRes == null) return@LaunchedEffect
+        isPlayingAnimation = true
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -76,10 +113,26 @@ fun StartScreen(
             .verticalScroll(rememberScrollState())
     ) {
         AnimatedVisibility(
-            visible = weatherData != null,
+            visible = lottieRes != null,
             enter = fadeIn(),
             exit = fadeOut(),
             modifier = Modifier.align(Alignment.TopCenter)
+        ) {
+            LottieAnimation(
+                composition = composition,
+                progress = {
+                    logoAnimationState.progress
+                },
+                modifier = Modifier
+                    .size(120.dp)
+            )
+        }
+
+        AnimatedVisibility(
+            visible = weatherData != null,
+            enter = fadeIn(),
+            exit = fadeOut(),
+            modifier = Modifier.align(Alignment.Center)
         ) {
             Column(
                 verticalArrangement = Arrangement.spacedBy(8.dp),
