@@ -20,6 +20,7 @@ class WeatherViewModel @Inject constructor(
     val currentCityWeather get() = _currentCityWeather
 
     fun getWeather(query: String) {
+        _currentCityWeather.value = Result.Loading
         viewModelScope.launch(Dispatchers.IO) {
             when (val result = weatherRepository.getWeather(query)) {
                 is Result.Error -> println(result.exception)

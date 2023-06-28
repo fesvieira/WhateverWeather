@@ -3,6 +3,7 @@ package com.fesvieira.whateverweather.screens
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -57,6 +58,7 @@ import com.fesvieira.whateverweather.helpers.withShadow
 import com.fesvieira.whateverweather.models.Result
 import com.fesvieira.whateverweather.ui.theme.Gray
 import com.fesvieira.whateverweather.ui.theme.MidnightBlue
+import com.fesvieira.whateverweather.ui.theme.TextFieldBackground
 import com.fesvieira.whateverweather.ui.theme.Typography
 import com.fesvieira.whateverweather.viewmodels.WeatherViewModel
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -80,12 +82,16 @@ fun StartScreen(
         mutableStateOf(TextFieldValue(""))
     }
 
+    val isLoading by remember(currentCityWeather) {
+        derivedStateOf { currentCityWeather as? Result.Loading != null }
+    }
+
     val lottieRes by remember(weatherData) { derivedStateOf { weatherData.weatherLottie } }
     val weatherGradient by remember(weatherData) { derivedStateOf { weatherData.weatherGradient } }
     var isPlayingAnimation by remember { mutableStateOf(true) }
 
     val composition by rememberLottieComposition(
-        spec = LottieCompositionSpec.RawRes(lottieRes ?: R.raw.sunny)
+        spec = LottieCompositionSpec.RawRes(lottieRes ?: R.raw.loading)
     )
     val logoAnimationState =
         animateLottieCompositionAsState(
@@ -93,6 +99,15 @@ fun StartScreen(
             iterations = LottieConstants.IterateForever,
             isPlaying = isPlayingAnimation,
             speed = if (lottieRes == R.raw.sunny) 0.5f else 2.0f
+        )
+
+    val loadingComposition by rememberLottieComposition(
+        spec = LottieCompositionSpec.RawRes(R.raw.loading)
+    )
+    val loadingAnimationState =
+        animateLottieCompositionAsState(
+            composition = loadingComposition,
+            iterations = LottieConstants.IterateForever
         )
 
     val focusRequester = remember {
@@ -107,31 +122,52 @@ fun StartScreen(
         isPlayingAnimation = true
     }
 
+    LaunchedEffect(Unit) {
+        weatherViewModel.getWeather("Maringá")
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
             .gradientBackground(colors = weatherGradient, angle = 270f)
             .padding(16.dp)
-            .verticalScroll(rememberScrollState())
     ) {
         AnimatedVisibility(
-            visible = weatherData != null,
+            visible = isLoading,
+            modifier = Modifier.align(Alignment.Center)
+        ) {
+            LottieAnimation(
+                composition = loadingComposition,
+                progress = {
+                    loadingAnimationState.progress
+                },
+                modifier = Modifier
+                    .size(180.dp)
+            )
+        }
+
+        AnimatedVisibility(
+            visible = weatherData != null && !isLoading,
             enter = fadeIn(),
             exit = fadeOut(),
             modifier = Modifier.align(Alignment.TopCenter)
         ) {
             Column(
                 verticalArrangement = Arrangement.spacedBy(8.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .verticalScroll(rememberScrollState(), enabled = true)
             ) {
-                LottieAnimation(
-                    composition = composition,
-                    progress = {
-                        logoAnimationState.progress
-                    },
-                    modifier = Modifier
-                        .size(180.dp)
-                )
+                if (lottieRes != null) {
+                    LottieAnimation(
+                        composition = composition,
+                        progress = {
+                            logoAnimationState.progress
+                        },
+                        modifier = Modifier
+                            .size(180.dp)
+                    )
+                }
 
                 Text(
                     text = weatherData?.location?.formatLocale ?: "",
@@ -154,7 +190,7 @@ fun StartScreen(
         }
 
         AnimatedVisibility(
-            visible = weatherData == null,
+            visible = weatherData == null && !isLoading,
             enter = fadeIn(),
             exit = fadeOut(),
             modifier = Modifier.align(Alignment.TopCenter)
@@ -167,38 +203,45 @@ fun StartScreen(
             )
         }
 
-        FormsTextField(
-            textState = textState,
-            backgroundColor = MidnightBlue.copy(alpha = 0.6f),
-            focusRequester = focusRequester,
-            onValueChange = {
-                textState = it
-            },
-            trailingIcon = {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_search),
-                    contentDescription = null,
-                    tint = Color.White,
-                    modifier = Modifier
-                        .clip(CircleShape)
-                        .clickable {
-                            focusManager.clearFocus()
-                            weatherViewModel.getWeather(textState.text)
-                        }
-                        .padding(12.dp)
-                )
-            },
-            placeholder = "Discover weather...",
-            onDone = {
-                 focusManager.clearFocus()
-                 weatherViewModel.getWeather(textState.text)
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.BottomCenter)
-                .onFocusChanged {
-                    if (it.hasFocus) textState = TextFieldValue("")
-                }
-        )
+        AnimatedVisibility(
+            visible = !isLoading,
+            enter = fadeIn(),
+            exit = fadeOut(),
+            modifier = Modifier.align(Alignment.BottomCenter)
+        ) {
+            FormsTextField(
+                textState = textState,
+                backgroundColor = TextFieldBackground,
+                focusRequester = focusRequester,
+                onValueChange = {
+                    textState = it
+                },
+                trailingIcon = {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_search),
+                        contentDescription = null,
+                        tint = Color.White,
+                        modifier = Modifier
+                            .clip(CircleShape)
+                            .clickable {
+                                focusManager.clearFocus()
+                                weatherViewModel.getWeather(textState.text)
+                            }
+                            .padding(12.dp)
+                    )
+                },
+                placeholder = "Type a place...",
+                onDone = {
+                    focusManager.clearFocus()
+                    weatherViewModel.getWeather(textState.text)
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 12.dp)
+                    .onFocusChanged {
+                        if (it.hasFocus) textState = TextFieldValue("")
+                    }
+            )
+        }
     }
 }
