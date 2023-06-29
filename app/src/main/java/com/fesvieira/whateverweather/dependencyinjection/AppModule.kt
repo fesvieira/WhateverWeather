@@ -32,16 +32,6 @@ object AppModule {
 
     @Singleton
     @Provides
-    @WeatherRetrofit
-    fun provideWeatherRetrofit(okHttpClient: OkHttpClient, moshi: Moshi): Retrofit =
-        Retrofit.Builder()
-            .baseUrl(WEATHER_URL)
-            .addConverterFactory(MoshiConverterFactory.create(moshi))
-            .client(okHttpClient)
-            .build()
-
-    @Singleton
-    @Provides
     fun provideOkHttpClient(): OkHttpClient {
         val builder = OkHttpClient().newBuilder()
             .connectTimeout(30, TimeUnit.SECONDS)
@@ -65,6 +55,16 @@ object AppModule {
 
         return builder.build()
     }
+
+    @Singleton
+    @Provides
+    @WeatherRetrofit
+    fun provideWeatherRetrofit(okHttpClient: OkHttpClient, moshi: Moshi): Retrofit =
+        Retrofit.Builder()
+            .baseUrl(WEATHER_URL)
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
+            .client(okHttpClient)
+            .build()
 
     @Provides
     fun provideWeatherService(@WeatherRetrofit retrofit: Retrofit): WeatherService = retrofit.create(
