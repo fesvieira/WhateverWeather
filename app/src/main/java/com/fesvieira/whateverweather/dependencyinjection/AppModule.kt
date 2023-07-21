@@ -1,12 +1,18 @@
 package com.fesvieira.whateverweather.dependencyinjection
 
+import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
 import com.fesvieira.whateverweather.BuildConfig
+import com.fesvieira.whateverweather.repository.UserPreferencesRepository
 import com.fesvieira.whateverweather.repository.WeatherService
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -16,6 +22,10 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Qualifier
 import javax.inject.Singleton
+
+private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(
+    name = "user_preferences"
+)
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -69,4 +79,11 @@ object AppModule {
     fun provideWeatherService(@WeatherRetrofit retrofit: Retrofit): WeatherService = retrofit.create(
         WeatherService::class.java
     )
+
+    @Provides
+    fun provideUserPreferencesRepository(
+        @ApplicationContext context: Context
+    ): UserPreferencesRepository {
+        return UserPreferencesRepository(context.dataStore)
+    }
 }

@@ -122,10 +122,6 @@ fun StartScreen(
         isPlayingAnimation = true
     }
 
-    LaunchedEffect(Unit) {
-        weatherViewModel.getWeather("Maringá")
-    }
-
     Box(
         modifier = Modifier
             .fillMaxSize()
