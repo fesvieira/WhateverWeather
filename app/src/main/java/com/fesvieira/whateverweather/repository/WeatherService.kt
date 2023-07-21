@@ -1,4 +1,4 @@
-package com.fesvieira.whateverweather.network
+package com.fesvieira.whateverweather.repository
 
 import com.fesvieira.whateverweather.models.WeatherData
 import retrofit2.Response

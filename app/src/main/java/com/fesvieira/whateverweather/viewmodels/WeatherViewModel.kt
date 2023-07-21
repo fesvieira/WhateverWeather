@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.fesvieira.whateverweather.models.Result
 import com.fesvieira.whateverweather.models.WeatherData
-import com.fesvieira.whateverweather.network.WeatherRepository
+import com.fesvieira.whateverweather.repository.WeatherRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -1,7 +1,7 @@
 package com.fesvieira.whateverweather.dependencyinjection
 
 import com.fesvieira.whateverweather.BuildConfig
-import com.fesvieira.whateverweather.network.WeatherService
+import com.fesvieira.whateverweather.repository.WeatherService
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -10,7 +10,6 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
