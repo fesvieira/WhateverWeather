@@ -47,7 +47,6 @@ import com.fesvieira.whateverweather.components.NextDayChip
 import com.fesvieira.whateverweather.components.SearchTextField
 import com.fesvieira.whateverweather.helpers.KeyboardState
 import com.fesvieira.whateverweather.helpers.formatLocale
-import com.fesvieira.whateverweather.helpers.formatTemperature
 import com.fesvieira.whateverweather.helpers.getTemp
 import com.fesvieira.whateverweather.helpers.gradientBackground
 import com.fesvieira.whateverweather.helpers.keyboardAsState
@@ -219,18 +218,20 @@ fun StartScreen(
             Box(
                 modifier = Modifier
                     .padding(16.dp)
+                    .clip(CircleShape)
+                    .clickable {
+                        weatherViewModel.setTempUnit(!useCelsius)
+                    }
+                    .size(40.dp)
                     .background(TextFieldBackground, CircleShape)
             ) {
                 Text(
                     text = if (useCelsius) "ºC" else "ºF",
                     color = Color.White,
                     style = Typography.bodyMedium,
+                    textAlign = TextAlign.Center,
                     modifier = Modifier
-                        .clip(CircleShape)
-                        .clickable {
-                            weatherViewModel.setTempUnit(!useCelsius)
-                        }
-                        .padding(vertical = 8.dp, horizontal = 12.dp)
+                        .align(Alignment.Center)
                 )
             }
         }
