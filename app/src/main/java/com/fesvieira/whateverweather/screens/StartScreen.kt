@@ -29,7 +29,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
@@ -49,6 +51,7 @@ import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.fesvieira.whateverweather.R
 import com.fesvieira.whateverweather.components.FormsTextField
+import com.fesvieira.whateverweather.components.SearchTextField
 import com.fesvieira.whateverweather.helpers.formatLocale
 import com.fesvieira.whateverweather.helpers.formatTemperature
 import com.fesvieira.whateverweather.helpers.gradientBackground
@@ -205,39 +208,15 @@ fun StartScreen(
             exit = fadeOut(),
             modifier = Modifier.align(Alignment.BottomCenter)
         ) {
-            FormsTextField(
+            SearchTextField(
                 textState = textState,
-                backgroundColor = TextFieldBackground,
                 focusRequester = focusRequester,
-                onValueChange = {
-                    textState = it
-                },
-                trailingIcon = {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_search),
-                        contentDescription = null,
-                        tint = Color.White,
-                        modifier = Modifier
-                            .clip(CircleShape)
-                            .clickable {
-                                focusManager.clearFocus()
-                                weatherViewModel.getWeather(textState.text)
-                            }
-                            .padding(12.dp)
-                    )
-                },
-                placeholder = "Type a place...",
-                onDone = {
-                    focusManager.clearFocus()
-                    weatherViewModel.getWeather(textState.text)
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 12.dp)
-                    .onFocusChanged {
-                        if (it.hasFocus) textState = TextFieldValue("")
-                    }
+                focusManager = focusManager,
+                onValueChange = { textState = it },
+                onSearchClick = { weatherViewModel.getWeather(textState.text) },
+                onFocus = { if (it.hasFocus) textState = TextFieldValue("") }
             )
         }
     }
 }
+
