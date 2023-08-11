@@ -64,7 +64,7 @@ dependencies {
     implementation 'androidx.compose.ui:ui'
     implementation 'androidx.compose.ui:ui-graphics'
     implementation 'androidx.compose.ui:ui-tooling-preview'
-    implementation 'androidx.fragment:fragment-ktx:1.6.0'
+    implementation 'androidx.fragment:fragment-ktx:1.6.1'
 
     //noinspection GradleDependency
     implementation 'androidx.compose.material3:material3-android:1.2.0-alpha02'
@@ -77,28 +77,19 @@ dependencies {
     debugImplementation 'androidx.compose.ui:ui-tooling'
     debugImplementation 'androidx.compose.ui:ui-test-manifest'
 
-    // Moshi
-    implementation 'com.squareup.moshi:moshi-kotlin:1.14.0'
-
-    // Retrofit with Moshi Converter
-    implementation 'com.squareup.retrofit2:converter-moshi:2.9.0'
-
     // Hilt
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
     implementation "androidx.hilt:hilt-navigation-compose:$hilt_navigation_compose_version"
 
-    // okhttp3
     implementation "com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2"
+    implementation "com.airbnb.android:lottie-compose:6.0.0"
+    implementation "com.google.accompanist:accompanist-systemuicontroller:0.28.0"
+    implementation "androidx.datastore:datastore-preferences:1.0.0"
+    implementation("io.coil-kt:coil-compose:2.4.0")
+    implementation 'com.squareup.moshi:moshi-kotlin:1.14.0'
+    implementation 'com.squareup.retrofit2:converter-moshi:2.9.0'
 
     // Coroutines
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1"
-
-    // Lottie
-    implementation "com.airbnb.android:lottie-compose:6.0.0"
-
-    implementation "com.google.accompanist:accompanist-systemuicontroller:0.28.0"
-
-    // Datastore
-    implementation "androidx.datastore:datastore-preferences:1.0.0"
 }

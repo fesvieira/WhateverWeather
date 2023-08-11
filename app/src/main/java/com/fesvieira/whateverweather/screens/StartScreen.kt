@@ -1,5 +1,6 @@
 package com.fesvieira.whateverweather.screens
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -8,10 +9,14 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
@@ -51,6 +56,7 @@ import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.fesvieira.whateverweather.R
 import com.fesvieira.whateverweather.components.FormsTextField
+import com.fesvieira.whateverweather.components.NextDayChip
 import com.fesvieira.whateverweather.components.SearchTextField
 import com.fesvieira.whateverweather.helpers.formatLocale
 import com.fesvieira.whateverweather.helpers.formatTemperature
@@ -119,10 +125,19 @@ fun StartScreen(
 
     val focusManager = LocalFocusManager.current
 
+    var showNextDays by remember { mutableStateOf(true) }
+
     LaunchedEffect(weatherData) {
         systemUiController.setStatusBarColor(weatherGradient[0])
         systemUiController.setNavigationBarColor(weatherGradient[1])
         isPlayingAnimation = true
+    }
+
+    BackHandler {
+        if (!showNextDays) {
+            focusManager.clearFocus()
+            showNextDays = true
+        }
     }
 
     Box(
@@ -202,6 +217,16 @@ fun StartScreen(
             )
         }
 
+        if (!isLoading && showNextDays && weatherData?.forecast?.forecastDays != null) {
+            LazyRow(horizontalArrangement = Arrangement.spacedBy(16.dp), modifier = Modifier
+                .padding(bottom = 150.dp)
+                .align(Alignment.BottomCenter)) {
+                items(weatherData?.forecast?.forecastDays ?: emptyList()) { forecastDay ->
+                    NextDayChip(forecastDay)
+                }
+            }
+        }
+
         AnimatedVisibility(
             visible = !isLoading,
             enter = fadeIn(),
@@ -214,7 +239,10 @@ fun StartScreen(
                 focusManager = focusManager,
                 onValueChange = { textState = it },
                 onSearchClick = { weatherViewModel.getWeather(textState.text) },
-                onFocus = { if (it.hasFocus) textState = TextFieldValue("") }
+                onFocus = {
+                    if (it.hasFocus) textState = TextFieldValue("")
+                    showNextDays = !it.hasFocus
+                }
             )
         }
     }
