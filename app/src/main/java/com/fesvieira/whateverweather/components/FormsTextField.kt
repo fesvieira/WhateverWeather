@@ -54,9 +54,9 @@ fun FormsTextField(
             focusedContainerColor = backgroundColor,
             unfocusedContainerColor = backgroundColor,
             cursorColor = Color.White,
-            focusedBorderColor = Color.Transparent,
-            unfocusedBorderColor = Color.Transparent,
-            errorBorderColor = Color.Magenta,
+            focusedBorderColor = DarkGray,
+            unfocusedBorderColor = DarkGray,
+            errorBorderColor = DarkGray,
             errorSupportingTextColor = Color.Magenta,
             errorContainerColor = backgroundColor
         ),
