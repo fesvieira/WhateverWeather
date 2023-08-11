@@ -1,8 +1,5 @@
 package com.fesvieira.whateverweather.screens
 
-import android.graphics.Rect
-import android.view.ViewTreeObserver
-import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -18,9 +15,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -33,13 +28,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavHostController
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
@@ -64,7 +57,6 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
 fun StartScreen(
-    navController: NavHostController? = null,
     weatherViewModel: WeatherViewModel = viewModel()
 ) {
     val systemUiController = rememberSystemUiController()
@@ -119,10 +111,6 @@ fun StartScreen(
         systemUiController.setStatusBarColor(weatherGradient[0])
         systemUiController.setNavigationBarColor(weatherGradient[1])
         isPlayingAnimation = true
-    }
-
-    BackHandler {
-        focusManager.clearFocus()
     }
 
     // Handle Back press with keyboard open

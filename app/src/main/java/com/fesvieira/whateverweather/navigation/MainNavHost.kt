@@ -17,7 +17,7 @@ fun MainNavHost() {
 
     NavHost(navController = navController, startDestination = START_SCREEN) {
         composable(START_SCREEN) {
-            StartScreen(navController, weatherViewModel)
+            StartScreen(weatherViewModel)
         }
     }
 }
