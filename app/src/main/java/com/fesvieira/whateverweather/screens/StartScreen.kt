@@ -3,6 +3,8 @@ package com.fesvieira.whateverweather.screens
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,6 +14,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,6 +28,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
@@ -44,6 +48,7 @@ import com.fesvieira.whateverweather.components.SearchTextField
 import com.fesvieira.whateverweather.helpers.KeyboardState
 import com.fesvieira.whateverweather.helpers.formatLocale
 import com.fesvieira.whateverweather.helpers.formatTemperature
+import com.fesvieira.whateverweather.helpers.getTemp
 import com.fesvieira.whateverweather.helpers.gradientBackground
 import com.fesvieira.whateverweather.helpers.keyboardAsState
 import com.fesvieira.whateverweather.helpers.weatherGradient
@@ -51,6 +56,7 @@ import com.fesvieira.whateverweather.helpers.weatherLottie
 import com.fesvieira.whateverweather.helpers.withShadow
 import com.fesvieira.whateverweather.models.Result
 import com.fesvieira.whateverweather.ui.theme.Gray
+import com.fesvieira.whateverweather.ui.theme.TextFieldBackground
 import com.fesvieira.whateverweather.ui.theme.Typography
 import com.fesvieira.whateverweather.viewmodels.WeatherViewModel
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -61,6 +67,7 @@ fun StartScreen(
 ) {
     val systemUiController = rememberSystemUiController()
     val currentCityWeather by weatherViewModel.currentCityWeather.collectAsState()
+    val useCelsius by weatherViewModel.useCelsius.collectAsState()
 
     val weatherData by remember(currentCityWeather) {
         derivedStateOf { (currentCityWeather as? Result.Success)?.data }
@@ -163,7 +170,7 @@ fun StartScreen(
                     )
 
                     Text(
-                        text = weatherData?.weather?.temp_c?.formatTemperature ?: "",
+                        text = weatherData?.weather?.getTemp(useCelsius) ?: "",
                         style = Typography.headlineLarge.withShadow,
                     )
 
@@ -180,8 +187,10 @@ fun StartScreen(
                             modifier = Modifier
                                 .padding(top = 32.dp, bottom = 72.dp)
                         ) {
-                            items(weatherData?.forecast?.forecastDays ?: emptyList()) { forecastDay ->
-                                NextDayChip(forecastDay)
+                            items(
+                                weatherData?.forecast?.forecastDays ?: emptyList()
+                            ) { forecastDay ->
+                                NextDayChip(forecastDay, useCelsius)
                             }
                         }
                     }
@@ -198,6 +207,30 @@ fun StartScreen(
                     style = Typography.bodyLarge,
                     color = Gray,
                     textAlign = TextAlign.Center
+                )
+            }
+        }
+
+        AnimatedVisibility(
+            visible = !isLoading,
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+        ) {
+            Box(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .background(TextFieldBackground, CircleShape)
+            ) {
+                Text(
+                    text = if (useCelsius) "ºC" else "ºF",
+                    color = Color.White,
+                    style = Typography.bodyMedium,
+                    modifier = Modifier
+                        .clip(CircleShape)
+                        .clickable {
+                            weatherViewModel.setTempUnit(!useCelsius)
+                        }
+                        .padding(vertical = 8.dp, horizontal = 12.dp)
                 )
             }
         }

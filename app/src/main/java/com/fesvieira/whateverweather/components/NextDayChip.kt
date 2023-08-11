@@ -23,7 +23,8 @@ import java.time.format.DateTimeFormatter
 
 @Composable
 fun NextDayChip(
-    forecastDay: ForecastDay
+    forecastDay: ForecastDay,
+    useCelsius: Boolean
 ) {
     val firstApiFormat = remember { DateTimeFormatter.ofPattern("yyyy-MM-dd") }
     val date = remember {
@@ -51,7 +52,7 @@ fun NextDayChip(
         )
 
         Text(
-            text = forecastDay.day.avgtemp_c.formatTemperature,
+            text = if (useCelsius) forecastDay.day.avgtemp_c.formatTemperature else forecastDay.day.avgtemp_f.formatTemperature,
             color = Color.White,
             style = Typography.bodyMedium
         )

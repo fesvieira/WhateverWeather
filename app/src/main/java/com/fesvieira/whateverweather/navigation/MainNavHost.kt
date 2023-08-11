@@ -7,7 +7,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.fesvieira.whateverweather.navigation.Routes.START_SCREEN
 import com.fesvieira.whateverweather.screens.StartScreen
-import com.fesvieira.whateverweather.ui.theme.WhateverWeatherTheme
 import com.fesvieira.whateverweather.viewmodels.WeatherViewModel
 
 @Composable

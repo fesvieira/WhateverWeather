@@ -9,7 +9,10 @@ import com.fesvieira.whateverweather.repository.WeatherRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,6 +24,16 @@ class WeatherViewModel @Inject constructor(
 
     private val _currentCityWeather = MutableStateFlow<Result<WeatherData>>(Result.Loading)
     val currentCityWeather get() = _currentCityWeather
+
+    private val _useCelsius = MutableStateFlow<Boolean>(false)
+    val useCelsius: StateFlow<Boolean> =
+        userPreferencesRepository
+            .useCelsius
+            .stateIn(
+                viewModelScope,
+                SharingStarted.WhileSubscribed(5_000),
+                false
+            )
 
     init {
         viewModelScope.launch {
@@ -41,5 +54,9 @@ class WeatherViewModel @Inject constructor(
             }
             _currentCityWeather.value = result
         }
+    }
+
+    fun setTempUnit(useCelsius: Boolean) = viewModelScope.launch {
+        userPreferencesRepository.saveUseCelsius(useCelsius)
     }
 }
