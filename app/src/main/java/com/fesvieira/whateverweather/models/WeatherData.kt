@@ -5,7 +5,8 @@ import com.squareup.moshi.Json
 data class WeatherData(
     val location: Location,
     @Json(name = "current")
-    val weather: CurrentWeather
+    val weather: CurrentWeather,
+    val forecast: Forecast
 )
 
 data class Location(
@@ -49,6 +50,22 @@ data class Condition(
     val text: String,
     val icon: String,
     val code: Int,
+)
+
+data class Forecast(
+    @Json(name = "forecastday")
+    val forecastDays: List<ForecastDay>
+)
+
+data class ForecastDay(
+    val date: String,
+    val day: DayWeather,
+)
+
+data class DayWeather(
+    val avgtemp_c: Double,
+    val avgtemp_f: Double,
+    val condition: Condition
 )
 
 
