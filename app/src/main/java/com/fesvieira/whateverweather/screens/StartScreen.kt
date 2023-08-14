@@ -9,8 +9,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
@@ -37,6 +40,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.compose.AsyncImage
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
@@ -55,6 +59,8 @@ import com.fesvieira.whateverweather.helpers.weatherLottie
 import com.fesvieira.whateverweather.helpers.withShadow
 import com.fesvieira.whateverweather.models.Result
 import com.fesvieira.whateverweather.ui.theme.Gray
+import com.fesvieira.whateverweather.ui.theme.SunnyGradientBottom
+import com.fesvieira.whateverweather.ui.theme.SunnyGradientTop
 import com.fesvieira.whateverweather.ui.theme.TextFieldBackground
 import com.fesvieira.whateverweather.ui.theme.Typography
 import com.fesvieira.whateverweather.viewmodels.WeatherViewModel
@@ -211,7 +217,7 @@ fun StartScreen(
         }
 
         AnimatedVisibility(
-            visible = !isLoading,
+            visible = weatherData != null && !isLoading,
             modifier = Modifier
                 .align(Alignment.TopEnd)
         ) {
@@ -240,14 +246,24 @@ fun StartScreen(
             visible = isLoading,
             modifier = Modifier.align(Alignment.Center)
         ) {
-            LottieAnimation(
-                composition = loadingComposition,
-                progress = {
-                    loadingAnimationState.progress
-                },
-                modifier = Modifier
-                    .size(180.dp)
-            )
+            Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                LottieAnimation(
+                    composition = loadingComposition,
+                    progress = {
+                        loadingAnimationState.progress
+                    },
+                    modifier = Modifier
+                        .size(180.dp)
+                )
+
+                Text(
+                    text = "Powered by WeatherAPI.com",
+                    style = Typography.bodyMedium
+                )
+            }
         }
 
         AnimatedVisibility(
