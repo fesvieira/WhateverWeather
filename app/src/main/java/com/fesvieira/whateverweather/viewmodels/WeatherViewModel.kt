@@ -45,11 +45,11 @@ class WeatherViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             val result = weatherRepository.getWeather(query)
             when (result) {
-                is Result.Error -> println(result.exception)
-                Result.Loading -> {}
                 is Result.Success -> {
                     userPreferencesRepository.saveCurrentCity(result.data.location.name)
                 }
+
+                else -> {}
             }
             _currentCityWeather.value = result
         }
