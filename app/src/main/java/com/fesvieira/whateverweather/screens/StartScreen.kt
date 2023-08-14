@@ -216,6 +216,8 @@ fun StartScreen(
 
         AnimatedVisibility(
             visible = weatherData != null && !isLoading,
+            enter = fadeIn(),
+            exit = fadeOut(),
             modifier = Modifier
                 .align(Alignment.TopEnd)
         ) {
@@ -245,6 +247,8 @@ fun StartScreen(
 
         AnimatedVisibility(
             visible = isLoading,
+            enter = fadeIn(),
+            exit = fadeOut(),
             modifier = Modifier.align(Alignment.Center)
         ) {
             Column(
