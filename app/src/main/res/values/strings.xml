@@ -5,4 +5,5 @@
     <string name="celsius_degree">ºC</string>
     <string name="fahrenheit_degree">ºF</string>
     <string name="powered_text">Powered by WeatherAPI.com</string>
+    <string name="type_a_place">Type a place…</string>
 </resources>

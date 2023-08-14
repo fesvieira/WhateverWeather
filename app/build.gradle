@@ -7,14 +7,14 @@ plugins {
 
 android {
     namespace 'com.fesvieira.whateverweather'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.fesvieira.whateverweather"
         minSdk 28
-        targetSdk 33
-        versionCode 1
-        versionName "1.0"
+        targetSdk 34
+        versionCode 2
+        versionName "1.1-test"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -33,6 +33,9 @@ android {
             buildConfigField "String", "WEATHER_KEY", WEATHER_KEY_RELEASE
 
             debuggable false
+            minifyEnabled true
+            shrinkResources true
+
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.debug
         }

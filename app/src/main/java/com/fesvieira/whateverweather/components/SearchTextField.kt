@@ -14,6 +14,7 @@ import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.fesvieira.whateverweather.R
@@ -36,7 +37,7 @@ fun SearchTextField(
         trailingIcon = {
             Icon(
                 painter = painterResource(id = R.drawable.ic_search),
-                contentDescription = null,
+                contentDescription = stringResource(R.string.type_a_place),
                 tint = Color.White,
                 modifier = Modifier
                     .clip(CircleShape)
@@ -47,7 +48,7 @@ fun SearchTextField(
                     .padding(12.dp)
             )
         },
-        placeholder = "Type a place...",
+        placeholder = stringResource(R.string.type_a_place),
         onDone = {
             focusManager.clearFocus()
             onSearchClick()
