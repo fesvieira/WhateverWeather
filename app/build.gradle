@@ -24,13 +24,17 @@ android {
 
     buildTypes {
         debug {
-            buildConfigField "String", "WEATHER_URL", WEATHER_URL
-            buildConfigField "String", "WEATHER_KEY", WEATHER_KEY
+            buildConfigField "String", "WEATHER_URL", WEATHER_URL_DEBUG
+            buildConfigField "String", "WEATHER_KEY", WEATHER_KEY_DEBUG
         }
 
         release {
-            minifyEnabled false
+            buildConfigField "String", "WEATHER_URL", WEATHER_URL_RELEASE
+            buildConfigField "String", "WEATHER_KEY", WEATHER_KEY_RELEASE
+
+            debuggable false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
         }
     }
     compileOptions {

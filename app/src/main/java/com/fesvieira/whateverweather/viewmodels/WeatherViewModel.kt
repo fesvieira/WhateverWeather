@@ -25,7 +25,6 @@ class WeatherViewModel @Inject constructor(
     private val _currentCityWeather = MutableStateFlow<Result<WeatherData>>(Result.Loading)
     val currentCityWeather get() = _currentCityWeather
 
-    private val _useCelsius = MutableStateFlow<Boolean>(false)
     val useCelsius: StateFlow<Boolean> =
         userPreferencesRepository
             .useCelsius
