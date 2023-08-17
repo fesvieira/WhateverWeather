@@ -7,46 +7,66 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import androidx.glance.unit.ColorProvider
 import com.fesvieira.whateverweather.R
+import androidx.glance.text.TextStyle as GTextStyle
+import androidx.glance.text.FontFamily as GFontFamily
+import androidx.glance.text.FontWeight as GFontWeight
 
-val Montserrat = FontFamily(
-    Font(R.font.open_sans)
-)
+val OpenSans = FontFamily(Font(R.font.open_sans))
+val GOpenSans = GFontFamily(OpenSans.toString())
 
 // Set of Material typography styles to start with
 val Typography = Typography(
     headlineLarge = TextStyle(
         fontSize = 96.sp,
-        fontFamily = Montserrat,
+        fontFamily = OpenSans,
         color = Color.White,
         fontWeight = FontWeight.Normal
     ),
     bodyLarge = TextStyle(
         fontSize = 34.sp,
-        fontFamily = Montserrat,
+        fontFamily = OpenSans,
         color = Color.White,
         fontWeight = FontWeight.Normal
     ),
     bodyMedium = TextStyle(
         fontSize = 20.sp,
-        fontFamily = Montserrat,
+        fontFamily = OpenSans,
         color = Color.White,
         fontWeight = FontWeight.Normal
     ),
-    /* Other default text styles to override
-    titleLarge = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Normal,
-        fontSize = 22.sp,
-        lineHeight = 28.sp,
-        letterSpacing = 0.sp
-    ),
-    labelSmall = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Medium,
-        fontSize = 11.sp,
-        lineHeight = 16.sp,
-        letterSpacing = 0.5.sp
+    bodySmall = TextStyle(
+        fontSize = 14.sp,
+        fontFamily = OpenSans,
+        color = Color.White,
+        fontWeight = FontWeight.Normal
     )
-    */
 )
+
+object GlanceTypography {
+    val headlineLarge = GTextStyle(
+        fontSize = 96.sp,
+        fontFamily = GOpenSans,
+        color = ColorProvider(R.color.white),
+        fontWeight = GFontWeight.Normal
+    )
+    val bodyLarge = GTextStyle(
+        fontSize = 34.sp,
+        fontFamily = GOpenSans,
+        color = ColorProvider(R.color.white),
+        fontWeight = GFontWeight.Normal
+    )
+    val bodyMedium = GTextStyle(
+        fontSize = 20.sp,
+        fontFamily = GOpenSans,
+        color = ColorProvider(R.color.white),
+        fontWeight = GFontWeight.Normal
+    )
+    val bodySmall = GTextStyle(
+        fontSize = 14.sp,
+        fontFamily = GOpenSans,
+        color = ColorProvider(R.color.white),
+        fontWeight = GFontWeight.Normal
+    )
+}

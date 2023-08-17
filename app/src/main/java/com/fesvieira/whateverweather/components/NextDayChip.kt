@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
@@ -38,25 +39,25 @@ fun NextDayChip(
         modifier = Modifier
             .background(TextFieldBackground, RoundedCornerShape(64.dp))
             .padding(vertical = 16.dp, horizontal = 8.dp)
-            .widthIn(64.dp)
+            .widthIn(min = 48.dp)
     ) {
         Text(
             text = "${date.monthValue}/${date.dayOfMonth}".format(forecastDay.date),
             color = Color.White,
-            style = Typography.bodyMedium
+            style = Typography.bodySmall
         )
 
         AsyncImage(
             model = "https:${forecastDay.day.condition.icon}",
             contentDescription = null,
             modifier = Modifier
-                .size(48.dp)
+                .size(40.dp)
         )
 
         Text(
             text = if (useCelsius) forecastDay.day.avgtemp_c.formatTemperature else forecastDay.day.avgtemp_f.formatTemperature,
             color = Color.White,
-            style = Typography.bodyMedium
+            style = Typography.bodySmall
         )
     }
 }
