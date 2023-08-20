@@ -49,7 +49,7 @@ object AppModule {
 
         builder.addInterceptor(Interceptor {
             val request = it.request().newBuilder()
-                .addHeader("X-RapidAPI-Key", BuildConfig.WEATHER_KEY)
+                .addHeader("key", BuildConfig.WEATHER_KEY)
                 .build()
             return@Interceptor it.proceed(request)
         })
