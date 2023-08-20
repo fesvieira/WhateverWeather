@@ -19,6 +19,9 @@ jobs:
       - android/restore-gradle-cache
       - android/restore-build-cache
       - run:
+          name: Chmod permissions #if permission for Gradlew Dependencies fail, use this.
+          command: sudo chmod +x ./gradlew
+      - run:
           name: Assemble release build
           command: |
             ./gradlew assembleRelease
