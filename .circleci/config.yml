@@ -11,8 +11,8 @@ jobs:
   release-build:
     docker:
       #cicleci image for JAVA version 1.8
-      - image: circleci/android:api-25-alpha
-      # - image: ccistaging/android:api-30
+      #- image: circleci/android:api-25-alpha
+      - image: ccistaging/android:api-30
 
     steps:
       - checkout
