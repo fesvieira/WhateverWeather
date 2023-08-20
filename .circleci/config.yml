@@ -10,9 +10,7 @@ orbs:
 jobs:
   release-build:
     docker:
-      #cicleci image for JAVA version 1.8
-      - image: circleci/android:api-25-alpha
-      #- image: ccistaging/android:api-30
+      - image: cimg/android:2023.04
 
     environment:
       JVM_OPTS: -Xmx3200m
