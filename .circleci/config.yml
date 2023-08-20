@@ -10,10 +10,10 @@ orbs:
 jobs:
   release-build:
     executor:
-      name: android/android-machine
-      resource-class: xlarge
-      tag: 2023.08.20
-      
+      name: android/android
+      #resource-class: xlarge
+      #tag: 2023.08.20
+
     steps:
       - checkout
       - android/restore-gradle-cache
