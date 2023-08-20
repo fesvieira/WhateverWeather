@@ -9,10 +9,10 @@ orbs:
 # See: https://circleci.com/docs/configuration-reference/#jobs
 jobs:
   release-build:
-    executor:
-      name: android/android-machine
-      resource-class: xlarge
-      tag: 2022.08.01
+    docker:
+      #cicleci image for JAVA version 1.8
+      - image: circleci/android:api-25-alpha
+      # - image: ccistaging/android:api-30
 
     steps:
       - checkout
