@@ -171,7 +171,7 @@ fun StartScreen(
 
                     Text(
                         text = weatherData?.weather?.getTemp(useCelsius) ?: "",
-                        style = Typography.headlineLarge.withShadow,
+                        style = Typography.headlineMedium.withShadow,
                     )
 
                     Text(
@@ -207,7 +207,7 @@ fun StartScreen(
                         if (error == null) R.string.type_location
                         else R.string.location_not_found
                     ),
-                    style = Typography.bodyLarge,
+                    style = Typography.bodyMedium,
                     color = Gray,
                     textAlign = TextAlign.Center
                 )
@@ -290,6 +290,3 @@ fun StartScreen(
         }
     }
 }
-
-
-

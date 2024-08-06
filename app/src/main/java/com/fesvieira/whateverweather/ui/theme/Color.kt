@@ -14,4 +14,4 @@ val NightGradientBottom = Color(0xFF304262)
 val CloudGradientTop = Color(0xff616c7a)
 val CloudGradientBottom = Color(0xFF3B4249)
 
-val TextFieldBackground = Color(0xFF242734)
+val TextFieldBackground = Color(0x99242734)

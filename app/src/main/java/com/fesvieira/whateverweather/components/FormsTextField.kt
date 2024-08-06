@@ -62,7 +62,7 @@ fun FormsTextField(
         ),
         textStyle = Typography.bodyMedium,
         singleLine = true,
-        shape = RoundedCornerShape(24.dp),
+        shape = RoundedCornerShape(48.dp),
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text, capitalization = KeyboardCapitalization.Words),
         keyboardActions = KeyboardActions(onDone = onDone),
         leadingIcon = leadingIcon,

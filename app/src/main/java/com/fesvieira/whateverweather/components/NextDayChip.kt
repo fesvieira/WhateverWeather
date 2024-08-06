@@ -36,8 +36,8 @@ fun NextDayChip(
         verticalArrangement = Arrangement.spacedBy(12.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
-            .background(TextFieldBackground, RoundedCornerShape(64.dp))
-            .padding(vertical = 16.dp, horizontal = 8.dp)
+            .background(TextFieldBackground, RoundedCornerShape(8.dp))
+            .padding(vertical = 8.dp, horizontal = 8.dp)
             .widthIn(64.dp)
     ) {
         Text(
